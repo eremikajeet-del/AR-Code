@@ -1,3 +1,4 @@
+import { supabase } from '../lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useModels } from '../hooks/useModels'
@@ -23,14 +24,19 @@ export default function Viewer() {
 
       setLoading(true)
       try {
-        const record = await fetchModelById(id)
-        if (record) {
-          setModel(record)
+        const { data, error: fetchErr } = await supabase
+          .from('models')
+          .select('*')
+          .eq('id', id)
+          .single()
+
+        if (fetchErr) throw fetchErr
+        if (data) {
+          setModel(data)
         } else {
           setError('The requested 3D model could not be found or has been deleted.')
         }
       } catch (err: any) {
-        console.error('Failed to load viewer model:', err)
         setError(err.message || 'An error occurred while loading the 3D model.')
       } finally {
         setLoading(false)
@@ -38,7 +44,7 @@ export default function Viewer() {
     }
 
     loadModel()
-  }, [id, fetchModelById])
+  }, [id])
 
   // Detect if browser/device supports WebXR / AR Quick Look
   useEffect(() => {
@@ -163,17 +169,33 @@ export default function Viewer() {
           camera-controls
           auto-rotate
           shadow-intensity="1"
+          ar-scale="auto"
+          touch-action="pan-y"
           style={{ width: '100vw', height: '100vh' }}
         >
           {/* Custom AR Trigger Button Overlay (Visible only in non-AR preview modes on mobile). Min tap target is 48px. */}
           <button
             slot="ar-button"
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-6 py-3 rounded-full shadow-lg shadow-indigo-500/20 flex items-center gap-2 border border-indigo-400/30 transition-all duration-300 min-h-[48px] min-w-[48px] pointer-events-auto"
+            style={{
+              position: 'absolute',
+              bottom: '24px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              backgroundColor: '#4f46e5',
+              color: 'white',
+              border: 'none',
+              borderRadius: '999px',
+              padding: '14px 28px',
+              fontSize: '15px',
+              fontWeight: '600',
+              minHeight: '48px',
+              minWidth: '200px',
+              cursor: 'pointer',
+              zIndex: 999,
+            }}
           >
-            <Box className="w-4.5 h-4.5" />
-            Place in your room (AR)
+            📦 Place in your room (AR)
           </button>
-
           {/* AR Quick Look placement instruction */}
           <div id="ar-prompt" className="hidden border border-slate-700/50">
             <HelpCircle className="w-4 h-4 text-indigo-400" />
