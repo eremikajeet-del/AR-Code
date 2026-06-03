@@ -1,13 +1,11 @@
 import { supabase } from '../lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { useModels } from '../hooks/useModels'
 import type { ModelRecord } from '../hooks/useModels'
 import { Box, Home, AlertCircle, Share2, HelpCircle } from 'lucide-react'
 
 export default function Viewer() {
   const { id } = useParams<{ id: string }>()
-  const { fetchModelById } = useModels()
   const [model, setModel] = useState<ModelRecord | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -205,7 +203,7 @@ export default function Viewer() {
       </div>
 
       {/* Device AR Status Notification */}
-      <div className="absolute bottom-6 left-4 right-4 z-25 text-center pointer-events-none">
+      <div className="absolute bottom-6 left-4 right-4 z-20 text-center pointer-events-none">
         {!arSupported ? (
           <p className="inline-block bg-slate-900/95 border border-red-500/20 text-xs text-red-400 py-2 px-4 rounded-full shadow-lg backdrop-blur-md">
             AR not available — enjoy the 3D view
