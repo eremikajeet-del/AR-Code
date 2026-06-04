@@ -2,14 +2,12 @@ import { supabase } from '../lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import type { ModelRecord } from '../hooks/useModels'
-import { Home, AlertCircle, Share2 } from 'lucide-react'
 
 export default function Viewer() {
   const { id } = useParams<{ id: string }>()
   const [model, setModel] = useState<ModelRecord | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     async function loadModel() {
@@ -42,16 +40,6 @@ export default function Viewer() {
 
     loadModel()
   }, [id])
-
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('Copy failed:', err)
-    }
-  }
 
   if (loading) {
     return (
@@ -87,13 +75,6 @@ export default function Viewer() {
       <header className="absolute inset-x-0 top-0 z-20 flex h-12 items-center justify-between bg-[rgba(15,14,13,0.7)] px-4 backdrop-blur-[12px] sm:px-6">
         <span className="text-[15px] font-serif text-[#F5EBE0]">Tamtara</span>
         <span className="max-w-[160px] truncate text-[13px] font-sans text-[#FAFAF8]">{model.file_name.replace(/\.[^/.]+$/, '')}</span>
-        <button
-          onClick={handleShare}
-          className="text-[#FAFAF8]"
-          title="Copy Link to Share"
-        >
-          <Share2 className="h-6 w-6" />
-        </button>
       </header>
 
       <div className="absolute inset-0">
