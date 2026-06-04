@@ -6,7 +6,7 @@ import type { ModelRecord } from '../hooks/useModels'
 import UploadZone from '../components/UploadZone'
 import ModelCard from '../components/ModelCard'
 import QRCode from '../components/QRCode'
-import { HelpCircle, Layers } from 'lucide-react'
+import { HelpCircle } from 'lucide-react'
 
 export default function Dashboard() {
   const { checking, allowed } = useAccessControl()

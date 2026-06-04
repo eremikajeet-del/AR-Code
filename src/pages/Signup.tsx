@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, UserPlus, AlertCircle, CheckCircle } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 
