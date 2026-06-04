@@ -1,6 +1,6 @@
 import { supabase } from '../lib/supabaseClient'
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import type { ModelRecord } from '../hooks/useModels'
 
 export default function Viewer() {
@@ -31,8 +31,8 @@ export default function Viewer() {
         } else {
           setError('The requested 3D model could not be found or has been deleted.')
         }
-      } catch (err: any) {
-        setError(err.message || 'An error occurred while loading the 3D model.')
+      } catch (err: unknown) {
+        setError((err as Error).message || 'An error occurred while loading the 3D model.')
       } finally {
         setLoading(false)
       }
@@ -43,41 +43,148 @@ export default function Viewer() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0F0E0D] px-4 text-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 rounded-full border border-[#FAFAF8] border-t-transparent animate-spin" />
-          <p className="text-[13px] text-[#FAFAF8]">Loading</p>
-        </div>
+      <div
+        style={{
+          minHeight: '100vh',
+          background: '#050505',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: '22px',
+            fontWeight: 400,
+            color: '#F0F0F0',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            marginBottom: '32px',
+          }}
+        >
+          Tamtara
+        </p>
+        <div
+          style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            border: '1.5px solid rgba(201,168,76,0.15)',
+            borderTop: '1.5px solid #C9A84C',
+            animation: 'spin 1.2s linear infinite',
+          }}
+        />
+        <p
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '12px',
+            color: '#555555',
+            letterSpacing: '0.1em',
+            marginTop: '16px',
+          }}
+        >
+          Preparing your dish...
+        </p>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     )
   }
 
   if (error || !model) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FAFAF8] px-4 text-center">
-        <div className="max-w-md rounded-[8px] border border-[#E8E4DC] bg-white px-6 py-10">
-          <h1 className="text-[24px] font-serif text-[#1A1714]">Dish not found</h1>
-          <p className="mt-4 text-[14px] text-[#8C8479]">This dish may have been removed.</p>
-          <Link
-            to="/dashboard"
-            className="mt-6 inline-flex rounded-[4px] border border-[#E8E4DC] bg-transparent px-4 py-3 text-[14px] text-[#C17D3C] transition-colors duration-200 hover:bg-[#F5EBE0]"
-          >
-            Go back
-          </Link>
-        </div>
+      <div
+        style={{
+          minHeight: '100vh',
+          background: '#080808',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 24px',
+          textAlign: 'center',
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: '28px',
+            fontWeight: 400,
+            color: '#F0F0F0',
+          }}
+        >
+          Dish not found
+        </h1>
+        <p
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '13px',
+            color: '#555555',
+            marginTop: '12px',
+          }}
+        >
+          This item may have been removed.
+        </p>
       </div>
     )
   }
 
+  const displayName = model.file_name.replace(/\.[^/.]+$/, '')
+
   return (
-    <div className="fixed inset-0 bg-[#0F0E0D] text-[#FAFAF8]">
-      <div className="absolute inset-0" />
-      <header className="absolute inset-x-0 top-0 z-20 flex h-12 items-center justify-between bg-[rgba(15,14,13,0.7)] px-4 backdrop-blur-[12px] sm:px-6">
-        <span className="text-[15px] font-serif text-[#F5EBE0]">Tamtara</span>
-        <span className="max-w-[160px] truncate text-[13px] font-sans text-[#FAFAF8]">{model.file_name.replace(/\.[^/.]+$/, '')}</span>
+    <div style={{ position: 'fixed', inset: 0, background: '#050505' }}>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+
+      {/* Top bar */}
+      <header
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '56px',
+          background: 'rgba(5,5,5,0.8)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          padding: '0 20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          zIndex: 20,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: '14px',
+            fontWeight: 400,
+            color: '#F0F0F0',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+          }}
+        >
+          Tamtara
+        </span>
+        <span
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '13px',
+            color: '#F0F0F0',
+            maxWidth: '160px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {displayName}
+        </span>
+        <div style={{ width: '40px' }} />
       </header>
 
-      <div className="absolute inset-0">
+      {/* Model viewer */}
+      <div style={{ position: 'absolute', inset: 0 }}>
         <model-viewer
           id="viewer-element"
           src={model.public_url}
@@ -99,37 +206,49 @@ export default function Viewer() {
             slot="ar-button"
             style={{
               position: 'fixed',
-              bottom: '32px',
+              bottom: '36px',
               left: '50%',
               transform: 'translateX(-50%)',
-              background: '#FAFAF8',
-              color: '#1A1714',
+              background: '#C9A84C',
+              color: '#080808',
               border: 'none',
-              borderRadius: '4px',
-              padding: '14px 28px',
+              borderRadius: '6px',
+              padding: '14px 32px',
               fontSize: '14px',
               fontWeight: '500',
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Inter', sans-serif",
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
               whiteSpace: 'nowrap',
               cursor: 'pointer',
               zIndex: 99999,
               minHeight: '48px',
-              width: 'auto',
               display: 'block',
-              letterSpacing: '0.02em',
-              boxSizing: 'border-box',
             }}
           >
-            View in AR
+            VIEW IN AR
           </button>
         </model-viewer>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-[92px] z-20 flex justify-center px-4">
-        <p className="rounded-full border border-white/15 bg-[rgba(15,14,13,0.75)] px-3 py-2 text-[11px] text-[rgba(250,250,248,0.7)]">
-          Rotate · Pinch to zoom
-        </p>
-      </div>
+      {/* Hint text */}
+      <p
+        style={{
+          position: 'fixed',
+          bottom: '96px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: 'rgba(240,240,240,0.25)',
+          fontFamily: "'Inter', sans-serif",
+          fontSize: '11px',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+          letterSpacing: '0.08em',
+          zIndex: 10,
+        }}
+      >
+        ROTATE · PINCH TO ZOOM
+      </p>
     </div>
   )
 }

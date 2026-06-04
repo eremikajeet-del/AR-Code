@@ -1,60 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  color-scheme: light;
-  --bg: #FAFAF8;
-  --surface: #FFFFFF;
-  --border: #E8E4DC;
-  --text: #1A1714;
-  --muted: #8C8479;
-  --accent: #C17D3C;
-  --accent-lt: #F5EBE0;
-  --danger: #C0392B;
-}
-
 * {
   box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  min-height: 100vh;
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  background: #080808;
+  color: #F0F0F0;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2,
-h3 {
-  font-family: 'DM Serif Display', serif;
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
   font-weight: 400;
-  line-height: 1.2;
 }
 
 ::selection {
-  background: rgba(193, 125, 60, 0.18);
-  color: var(--text);
+  background: rgba(201, 168, 76, 0.3);
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: #080808;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+  background: #222;
+  border-radius: 3px;
 }
 
 button,
@@ -62,26 +42,4 @@ input,
 textarea,
 select {
   font: inherit;
-}
-
-input,
-button {
-  transition: all 0.2s ease;
-}
-
-.model-card-thumbnail {
-  background: #F5F5F3;
-}
-
-.model-card-actions button {
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-.model-card-actions button:hover {
-  opacity: 0.92;
-}
-
-.model-viewer-card {
-  width: 100%;
-  height: 180px;
 }

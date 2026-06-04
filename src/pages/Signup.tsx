@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { CheckCircle } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 
 export default function Signup() {
@@ -42,99 +41,214 @@ export default function Signup() {
       } else {
         setSuccess(true)
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Signup error:', err)
-      setError(err.message || 'Failed to create account.')
+      setError((err as Error).message || 'Failed to create account.')
     } finally {
       setLoading(false)
     }
   }
 
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    height: '48px',
+    background: '#111111',
+    border: '1px solid rgba(255,255,255,0.07)',
+    borderRadius: '6px',
+    padding: '0 16px',
+    color: '#F0F0F0',
+    fontFamily: "'Inter', sans-serif",
+    fontSize: '14px',
+    outline: 'none',
+    marginBottom: '12px',
+    transition: 'border-color 0.2s',
+  }
+
   return (
-    <div className="min-h-screen bg-[#FAFAF8]">
-      <div className="mx-auto flex min-h-screen max-w-[380px] flex-col justify-center px-6 py-10">
-        <div className="text-center">
-          <p className="text-[24px] font-serif tracking-[0.08em] text-[#1A1714]">Tamtara</p>
-          <p className="mt-2 text-[12px] uppercase text-[#8C8479]">Menu Management</p>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: '#080808',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0 24px',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '360px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <p
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: '28px',
+              fontWeight: 400,
+              color: '#F0F0F0',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              marginBottom: '8px',
+            }}
+          >
+            Tamtara
+          </p>
+          <p
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '11px',
+              color: '#555555',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+            }}
+          >
+            AR Menu Platform
+          </p>
         </div>
 
-        <div className="mt-12">
-          <h1 className="text-[32px] font-serif text-[#1A1714]">Create account</h1>
-          {success ? (
-            <div className="mt-10 space-y-4">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F5EBE0] text-[#1A1714]">
-                <CheckCircle className="h-7 w-7" />
-              </div>
-              <p className="text-center text-[14px] text-[#1A1714]">Account created. Check your email to continue.</p>
-              <Link
-                to="/login"
-                className="mt-4 inline-flex w-full items-center justify-center rounded-[4px] border border-[#1A1714] bg-white px-4 py-3 text-[14px] font-medium text-[#1A1714] transition-colors duration-200 hover:bg-[#F5EBE0]"
-              >
-                Go to Sign in
-              </Link>
-            </div>
-          ) : (
-            <form onSubmit={handleSignup} className="mt-10 space-y-3">
-              <div>
-                <label className="block text-[12px] uppercase tracking-[0.15em] text-[#8C8479] mb-2">Email</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  disabled={loading}
-                  className="w-full h-11 rounded-[4px] border border-[#E8E4DC] bg-white px-4 text-[14px] text-[#1A1714] placeholder:text-[#8C8479] focus:border-[#1A1714] outline-none"
-                />
-              </div>
+        <h1
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: '36px',
+            fontWeight: 400,
+            color: '#F0F0F0',
+            marginBottom: '32px',
+          }}
+        >
+          Create account
+        </h1>
 
-              <div>
-                <label className="block text-[12px] uppercase tracking-[0.15em] text-[#8C8479] mb-2">Password</label>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="•••••••• (min 6 chars)"
-                  disabled={loading}
-                  className="w-full h-11 rounded-[4px] border border-[#E8E4DC] bg-white px-4 text-[14px] text-[#1A1714] placeholder:text-[#8C8479] focus:border-[#1A1714] outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[12px] uppercase tracking-[0.15em] text-[#8C8479] mb-2">Confirm password</label>
-                <input
-                  type="password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  disabled={loading}
-                  className="w-full h-11 rounded-[4px] border border-[#E8E4DC] bg-white px-4 text-[14px] text-[#1A1714] placeholder:text-[#8C8479] focus:border-[#1A1714] outline-none"
-                />
-              </div>
-
-              {error && <p className="text-[12px] text-[#C0392B]">{error}</p>}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="mt-5 flex h-11 w-full items-center justify-center rounded-[4px] bg-[#1A1714] text-[14px] font-medium text-white transition-colors duration-200 hover:bg-[#3D3530] disabled:opacity-50"
-              >
-                {loading ? 'Creating account...' : 'Get started'}
-              </button>
-            </form>
-          )}
-
-          {!success && (
-            <p className="mt-4 text-center text-[13px] text-[#C17D3C]">
-              Already have an account?{' '}
-              <Link to="/login" className="underline decoration-[#C17D3C] decoration-1 hover:no-underline">
-                Sign in
-              </Link>
+        {success ? (
+          <div style={{ textAlign: 'center' }}>
+            <p
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '14px',
+                color: '#F0F0F0',
+                marginBottom: '24px',
+              }}
+            >
+              Account created. Check your email to continue.
             </p>
-          )}
-        </div>
+            <Link
+              to="/login"
+              style={{
+                display: 'inline-block',
+                width: '100%',
+                height: '48px',
+                lineHeight: '48px',
+                textAlign: 'center',
+                background: '#C9A84C',
+                color: '#080808',
+                borderRadius: '6px',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '14px',
+                fontWeight: 500,
+                textDecoration: 'none',
+              }}
+            >
+              Go to Sign in
+            </Link>
+          </div>
+        ) : (
+          <form onSubmit={handleSignup}>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email address"
+              disabled={loading}
+              style={inputStyle}
+              onFocus={(e) => (e.currentTarget.style.borderColor = '#C9A84C')}
+              onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}
+            />
+
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password (min 6 characters)"
+              disabled={loading}
+              style={inputStyle}
+              onFocus={(e) => (e.currentTarget.style.borderColor = '#C9A84C')}
+              onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}
+            />
+
+            <input
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm password"
+              disabled={loading}
+              style={inputStyle}
+              onFocus={(e) => (e.currentTarget.style.borderColor = '#C9A84C')}
+              onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}
+            />
+
+            {error && (
+              <p
+                style={{
+                  color: '#EF4444',
+                  fontSize: '12px',
+                  fontFamily: "'Inter', sans-serif",
+                  marginTop: '8px',
+                }}
+              >
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: '100%',
+                height: '48px',
+                background: loading ? '#8a7035' : '#C9A84C',
+                color: '#080808',
+                border: 'none',
+                borderRadius: '6px',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '14px',
+                fontWeight: 500,
+                letterSpacing: '0.04em',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                marginTop: '20px',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) e.currentTarget.style.background = '#B8963E'
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) e.currentTarget.style.background = '#C9A84C'
+              }}
+            >
+              {loading ? 'Creating account...' : 'Get started'}
+            </button>
+          </form>
+        )}
+
+        {!success && (
+          <p
+            style={{
+              marginTop: '24px',
+              textAlign: 'center',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '13px',
+              color: '#555555',
+            }}
+          >
+            Have an account?{' '}
+            <Link
+              to="/login"
+              style={{ color: '#555555', textDecoration: 'underline', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#F0F0F0')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#555555')}
+            >
+              Sign in
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   )
