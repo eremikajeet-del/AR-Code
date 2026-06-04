@@ -55,11 +55,10 @@ export default function Viewer() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-panel px-4 text-center">
-        <div className="space-y-5 rounded-[28px] border border-[#2d2318] bg-[#120d09]/90 p-10 shadow-[0_30px_90px_rgba(0,0,0,0.35)]">
-          <div className="mx-auto h-14 w-14 rounded-full border-4 border-[#c9973a]/20 border-t-[#c9973a] animate-spin" />
-          <h2 className="text-2xl font-display font-semibold text-white">Preparing your dish...</h2>
-          <p className="text-sm text-muted">A premium 3D experience is on its way.</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#0F0E0D] px-4 text-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-8 w-8 rounded-full border border-[#FAFAF8] border-t-transparent animate-spin" />
+          <p className="text-[13px] text-[#FAFAF8]">Loading</p>
         </div>
       </div>
     )
@@ -67,19 +66,15 @@ export default function Viewer() {
 
   if (error || !model) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-panel px-4 text-center">
-        <div className="space-y-6 rounded-[28px] border border-[#2d2318] bg-[#120d09]/90 p-10 shadow-[0_30px_90px_rgba(0,0,0,0.35)]">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#1a1510] text-[#c9973a] shadow-[0_12px_40px_rgba(201,151,58,0.18)]">
-            <AlertCircle className="h-8 w-8" />
-          </div>
-          <h2 className="text-2xl font-display font-semibold text-white">Dish not found</h2>
-          <p className="max-w-md text-sm text-muted">{error || 'The menu item could not be loaded. Please try again later.'}</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#FAFAF8] px-4 text-center">
+        <div className="max-w-md rounded-[8px] border border-[#E8E4DC] bg-white px-6 py-10">
+          <h1 className="text-[24px] font-serif text-[#1A1714]">Dish not found</h1>
+          <p className="mt-4 text-[14px] text-[#8C8479]">This dish may have been removed.</p>
           <Link
             to="/dashboard"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#c9973a]/20 bg-[#1a1510] px-5 py-3 text-sm font-semibold text-[#e8b86d] shadow-[0_18px_45px_rgba(201,151,58,0.12)] transition-all duration-300 hover:bg-[#24190f]"
+            className="mt-6 inline-flex rounded-[4px] border border-[#E8E4DC] bg-transparent px-4 py-3 text-[14px] text-[#C17D3C] transition-colors duration-200 hover:bg-[#F5EBE0]"
           >
-            <Home className="h-4 w-4" />
-            Return Home
+            Go back
           </Link>
         </div>
       </div>
@@ -87,34 +82,21 @@ export default function Viewer() {
   }
 
   return (
-    <div className="fixed inset-0 w-screen h-screen bg-panel text-text-primary overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,151,58,0.12),_transparent_25%),radial-gradient(circle_at_bottom_left,_rgba(232,184,109,0.08),_transparent_20%)] pointer-events-none" />
-      <header className="frosted-topbar absolute inset-x-0 top-0 z-20 border-b border-[#c9973a]/15 px-4 py-4 backdrop-blur-xl sm:px-6">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-sm font-semibold text-[#e8b86d]">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-[#1a1510] border border-[#2d2318]">🍽️</span>
-            <span className="font-display text-white">Tamtara</span>
-          </div>
-          <div className="min-w-[0] px-4 py-2 text-center text-sm font-display text-white truncate">{model.file_name.replace(/\.[^/.]+$/, '')}</div>
-          <button
-            onClick={handleShare}
-            className="inline-flex items-center justify-center rounded-2xl border border-[#c9973a]/20 bg-[#1a1510]/90 px-4 py-2 text-sm font-semibold text-[#e8b86d] shadow-[0_16px_40px_rgba(201,151,58,0.12)] transition-all duration-300 hover:bg-[#24190f]"
-            title="Copy Link to Share"
-          >
-            <Share2 className="h-4 w-4" />
-          </button>
-        </div>
+    <div className="fixed inset-0 bg-[#0F0E0D] text-[#FAFAF8]">
+      <div className="absolute inset-0" />
+      <header className="absolute inset-x-0 top-0 z-20 flex h-12 items-center justify-between bg-[rgba(15,14,13,0.7)] px-4 backdrop-blur-[12px] sm:px-6">
+        <span className="text-[15px] font-serif text-[#F5EBE0]">Tamtara</span>
+        <span className="max-w-[160px] truncate text-[13px] font-sans text-[#FAFAF8]">{model.file_name.replace(/\.[^/.]+$/, '')}</span>
+        <button
+          onClick={handleShare}
+          className="text-[#FAFAF8]"
+          title="Copy Link to Share"
+        >
+          <Share2 className="h-6 w-6" />
+        </button>
       </header>
 
-      {copied && (
-        <div className="absolute inset-x-0 top-20 z-20 flex justify-center px-4">
-          <div className="rounded-full border border-[#c9973a]/20 bg-[#12100d]/95 px-4 py-2 text-xs text-[#e8b86d] shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-md">
-            Link copied to clipboard!
-          </div>
-        </div>
-      )}
-
-      <div className="absolute inset-0 z-10">
+      <div className="absolute inset-0">
         <model-viewer
           id="viewer-element"
           src={model.public_url}
@@ -136,35 +118,35 @@ export default function Viewer() {
             slot="ar-button"
             style={{
               position: 'fixed',
-              bottom: '40px',
+              bottom: '32px',
               left: '50%',
               transform: 'translateX(-50%)',
-              background: 'linear-gradient(135deg, #c9973a, #e8b86d)',
-              color: '#0a0705',
+              background: '#FAFAF8',
+              color: '#1A1714',
               border: 'none',
-              borderRadius: '999px',
-              padding: '16px 32px',
-              fontFamily: 'Inter, sans-serif',
-              fontWeight: '700',
-              fontSize: '15px',
-              minHeight: '52px',
+              borderRadius: '4px',
+              padding: '14px 28px',
+              fontSize: '14px',
+              fontWeight: '500',
+              fontFamily: "'DM Sans', sans-serif",
               whiteSpace: 'nowrap',
               cursor: 'pointer',
               zIndex: 99999,
-              boxShadow: '0 4px 24px rgba(201,151,58,0.4)',
+              minHeight: '48px',
               width: 'auto',
               display: 'block',
+              letterSpacing: '0.02em',
               boxSizing: 'border-box',
             }}
           >
-            ✨ View in AR
+            View in AR
           </button>
         </model-viewer>
       </div>
 
-      <div className="absolute inset-x-0 bottom-[118px] z-20 flex justify-center px-4">
-        <p className="rounded-full border border-[#2d2318] bg-[#110d09]/90 px-4 py-2 text-center text-xs text-muted backdrop-blur-md">
-          Rotate • Pinch to zoom • Tap AR to place on table
+      <div className="pointer-events-none absolute inset-x-0 bottom-[92px] z-20 flex justify-center px-4">
+        <p className="rounded-full border border-white/15 bg-[rgba(15,14,13,0.75)] px-3 py-2 text-[11px] text-[rgba(250,250,248,0.7)]">
+          Rotate · Pinch to zoom
         </p>
       </div>
     </div>
