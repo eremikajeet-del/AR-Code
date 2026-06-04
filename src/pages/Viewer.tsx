@@ -10,7 +10,6 @@ export default function Viewer() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
-  const [arSupported, setArSupported] = useState(true)
 
   useEffect(() => {
     async function loadModel() {
@@ -43,36 +42,6 @@ export default function Viewer() {
 
     loadModel()
   }, [id])
-
-  // Detect if browser/device supports WebXR / AR Quick Look
-  useEffect(() => {
-    if (!model) return
-
-    const checkArSupport = () => {
-      const modelViewer = document.getElementById('viewer-element') as any
-      if (modelViewer) {
-        // If canActivateAR is explicitly false, AR is unsupported
-        if (modelViewer.canActivateAR === false) {
-          setArSupported(false)
-        }
-      }
-    }
-
-    // Set a timeout to check after element initializes, and also listen to load event
-    const timer = setTimeout(checkArSupport, 1200)
-
-    const modelViewer = document.getElementById('viewer-element')
-    if (modelViewer) {
-      modelViewer.addEventListener('load', checkArSupport)
-    }
-
-    return () => {
-      clearTimeout(timer)
-      if (modelViewer) {
-        modelViewer.removeEventListener('load', checkArSupport)
-      }
-    }
-  }, [model])
 
   const handleShare = async () => {
     try {
