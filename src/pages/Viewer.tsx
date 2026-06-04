@@ -2,7 +2,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import type { ModelRecord } from '../hooks/useModels'
-import { Box, Home, AlertCircle, Share2, HelpCircle } from 'lucide-react'
+import { Home, AlertCircle, Share2 } from 'lucide-react'
 
 export default function Viewer() {
   const { id } = useParams<{ id: string }>()
@@ -161,59 +161,48 @@ export default function Viewer() {
         <model-viewer
           id="viewer-element"
           src={model.public_url}
-          alt={`3D representation of ${model.file_name}`}
+          alt={`3D model of ${model.file_name}`}
           ar
           ar-modes="webxr scene-viewer quick-look"
+          ar-scale="fixed"
+          ar-placement="floor"
           camera-controls
           auto-rotate
+          auto-rotate-delay="0"
+          rotation-per-second="30deg"
           shadow-intensity="1"
-          ar-scale="auto"
           touch-action="pan-y"
+          interaction-prompt="auto"
           style={{ width: '100vw', height: '100vh' }}
         >
-          {/* Custom AR Trigger Button Overlay (Visible only in non-AR preview modes on mobile). Min tap target is 48px. */}
           <button
             slot="ar-button"
             style={{
-              position: 'absolute',
-              bottom: '24px',
+              position: 'fixed',
+              bottom: '32px',
               left: '50%',
               transform: 'translateX(-50%)',
               backgroundColor: '#4f46e5',
               color: 'white',
-              border: 'none',
+              border: '3px solid white',
               borderRadius: '999px',
-              padding: '14px 28px',
-              fontSize: '15px',
-              fontWeight: '600',
-              minHeight: '48px',
-              minWidth: '200px',
+              padding: '14px 24px',
+              fontSize: '14px',
+              fontWeight: '700',
+              minHeight: '52px',
+              width: 'auto',
+              whiteSpace: 'nowrap',
               cursor: 'pointer',
-              zIndex: 999,
+              zIndex: 99999,
+              display: 'block',
+              boxSizing: 'border-box',
             }}
           >
             📦 Place in your room (AR)
           </button>
-          {/* AR Quick Look placement instruction */}
-          <div id="ar-prompt" className="hidden border border-slate-700/50">
-            <HelpCircle className="w-4 h-4 text-indigo-400" />
-            <span>Move your phone to scan the floor</span>
-          </div>
         </model-viewer>
       </div>
 
-      {/* Device AR Status Notification */}
-      <div className="absolute bottom-6 left-4 right-4 z-20 text-center pointer-events-none">
-        {!arSupported ? (
-          <p className="inline-block bg-slate-900/95 border border-red-500/20 text-xs text-red-400 py-2 px-4 rounded-full shadow-lg backdrop-blur-md">
-            AR not available — enjoy the 3D view
-          </p>
-        ) : (
-          <p className="inline-block bg-slate-900/95 border border-slate-800/80 text-[11px] text-slate-400 py-1.5 px-4 rounded-full shadow-lg backdrop-blur-md max-w-xs mx-auto">
-            Rotate with 1 finger • Zoom with 2 fingers
-          </p>
-        )}
-      </div>
     </div>
   )
 }

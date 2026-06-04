@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Mail, Lock, LogIn, AlertCircle, Box } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 
@@ -9,6 +9,8 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
+  const location = useLocation()
+  const accessError = location.state?.accessError as string | undefined
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,6 +55,21 @@ export default function Login() {
 
         {/* Card Form */}
         <div className="glass-card bg-slate-900/40 p-8 rounded-3xl border border-slate-800/80 glow-indigo">
+          {accessError && (
+            <div style={{
+              backgroundColor: '#fee2e2',
+              border: '1px solid #fca5a5',
+              color: '#991b1b',
+              padding: '12px 16px',
+              borderRadius: '10px',
+              marginBottom: '16px',
+              fontSize: '13px',
+              fontWeight: '500',
+              textAlign: 'center'
+            }}>
+              ⛔ {accessError}
+            </div>
+          )}
           <form onSubmit={handleLogin} className="space-y-5">
             {error && (
               <div className="flex items-start gap-2 bg-red-500/10 border border-red-500/20 text-red-400 p-3.5 rounded-xl text-sm leading-relaxed">

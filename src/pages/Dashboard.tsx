@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useModels } from '../hooks/useModels'
+import { useAccessControl } from '../hooks/useAccessControl'
 import type { ModelRecord } from '../hooks/useModels'
 import UploadZone from '../components/UploadZone'
 import ModelCard from '../components/ModelCard'
@@ -8,6 +9,7 @@ import QRCode from '../components/QRCode'
 import { Box, HelpCircle, Layers, Library } from 'lucide-react'
 
 export default function Dashboard() {
+  const { checking, allowed } = useAccessControl()
   const { user } = useAuth()
   const { models, loading, error, uploadProgress, fetchMyModels, uploadModel, deleteModel } = useModels()
   const [selectedModel, setSelectedModel] = useState<ModelRecord | null>(null)
@@ -52,6 +54,33 @@ export default function Dashboard() {
     }
     setDeletingId(null)
   }
+
+  if (checking) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#020617',
+        color: 'white',
+        flexDirection: 'column',
+        gap: '16px'
+      }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          border: '4px solid rgba(99,102,241,0.2)',
+          borderTop: '4px solid #6366f1',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }} />
+        <p style={{ color: '#94a3b8', fontSize: '14px' }}>Verifying access...</p>
+      </div>
+    )
+  }
+
+  if (!allowed) return null
 
   // Get the public sharing view URL
   const getViewUrl = (id: string) => {

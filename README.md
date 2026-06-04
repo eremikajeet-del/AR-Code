@@ -130,3 +130,18 @@ Deploying Aura3D to Vercel takes less than 2 minutes:
 5. **Set up SPA Routing** (Redirection fallback):
    We have already included a `vercel.json` file in the root folder to handle clean rewrites and avoid `404` errors when reloading dynamic paths like `/dashboard` or `/view/:id`.
 6. Click **Deploy**.
+
+## Managing Admin Access
+
+Only invited users can access the dashboard.
+To invite someone:
+
+1. Go to Supabase → SQL Editor
+2. Run this query with their email:
+   INSERT INTO public.allowed_users (email) VALUES ('newperson@email.com');
+
+To remove access:
+   DELETE FROM public.allowed_users WHERE email = 'person@email.com';
+
+To see all allowed users:
+   SELECT * FROM public.allowed_users;
