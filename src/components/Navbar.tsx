@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Box, LogOut, User } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 
 export default function Navbar() {
@@ -16,45 +16,42 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 w-full glass border-b border-slate-800 px-6 py-4">
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
-        {/* Brand/Logo */}
-        <Link to="/" className="flex items-center gap-2 group transition-all duration-300">
-          <div className="bg-indigo-600 p-2 rounded-xl group-hover:bg-indigo-500 shadow-lg shadow-indigo-500/20 transition-all duration-300">
-            <Box className="w-6 h-6 text-white animate-float" />
+    <nav className="sticky top-0 z-50 w-full frosted-topbar border-b border-[#c9973a]/15 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+        <Link to="/" className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-3xl border border-[#2d2318] bg-[#1a1510] text-[#e8b86d] shadow-[0_18px_50px_rgba(201,151,58,0.16)]">🍽️</div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.32em] text-[#e8b86d]">Tamtara</p>
+            <p className="text-lg font-display font-semibold text-white">Restaurant Portal</p>
           </div>
-          <span className="text-xl font-bold font-display tracking-tight text-white">
-            Aura<span className="text-indigo-400">3D</span>
-          </span>
         </Link>
 
-        {/* Auth / Menu */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
           {user ? (
             <>
-              <div className="hidden sm:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-full text-sm text-slate-300">
-                <User className="w-4 h-4 text-indigo-400" />
-                <span className="max-w-[150px] truncate">{user.email}</span>
+              <div className="hidden sm:flex items-center gap-2 rounded-full border border-[#2d2318] bg-[#120d09] px-4 py-2 text-sm text-[#a89880]">
+                <User className="h-4 w-4 text-[#e8b86d]" />
+                <span className="max-w-[180px] truncate">{user.email}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-red-500/30 text-slate-300 hover:text-red-400 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300"
+                className="gold-button inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold shadow-[0_18px_45px_rgba(201,151,58,0.18)] transition-all duration-300"
               >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Sign Out</span>
+                <LogOut className="h-4 w-4" />
+                <span>Sign Out</span>
               </button>
             </>
           ) : (
             <div className="flex items-center gap-3">
               <Link
                 to="/login"
-                className="text-slate-300 hover:text-white text-sm font-medium px-3 py-2 transition-colors"
+                className="text-sm font-medium text-[#a89880] transition-colors hover:text-white"
               >
                 Sign In
               </Link>
               <Link
                 to="/signup"
-                className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-300 shadow-md shadow-indigo-600/10 hover:shadow-indigo-600/30"
+                className="gold-button rounded-2xl px-4 py-2 text-sm font-semibold shadow-[0_18px_45px_rgba(201,151,58,0.18)]"
               >
                 Get Started
               </Link>

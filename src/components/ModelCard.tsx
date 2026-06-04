@@ -23,7 +23,6 @@ export default function ModelCard({
     day: 'numeric',
   })
 
-  // Format size info or clean name
   const displayName = model.file_name.endsWith('.glb') || model.file_name.endsWith('.gltf')
     ? model.file_name.slice(0, model.file_name.lastIndexOf('.'))
     : model.file_name
@@ -37,62 +36,60 @@ export default function ModelCard({
   return (
     <div
       onClick={onSelect}
-      className={`relative flex flex-col justify-between p-5 rounded-2xl cursor-pointer text-left transition-all duration-300 ${
+      className={`relative flex flex-col justify-between overflow-hidden rounded-[24px] border p-5 text-left transition-all duration-300 ${
         isSelected
-          ? 'bg-slate-900 border-2 border-indigo-500 shadow-lg shadow-indigo-500/10'
-          : 'glass-card border border-slate-800 bg-slate-900/40'
+          ? 'border-[#c9973a]/35 bg-[#1a1510] shadow-[0_0_35px_rgba(201,151,58,0.18)]'
+          : 'border-[#2d2318] bg-[#1a1510] hover:border-[#c9973a]/20 hover:shadow-[0_0_30px_rgba(201,151,58,0.12)]'
       }`}
     >
       <div>
-        {/* Model Icon / Badge header */}
+        <div className="mb-5 h-40 rounded-3xl border border-[#2d2318] bg-[#120d09] flex items-center justify-center text-sm text-[#a89880]">
+          3D Dish Preview
+        </div>
         <div className="flex items-start justify-between mb-4">
-          <div className={`p-3 rounded-xl transition-colors duration-300 ${
-            isSelected ? 'bg-indigo-650/20 text-indigo-400' : 'bg-slate-850 text-slate-400'
-          }`}>
-            <Box className="w-6 h-6 animate-float" />
+          <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${isSelected ? 'bg-[#38210d]' : 'bg-[#110b08]'} text-[#e8b86d]`}>
+            <Box className="h-5 w-5" />
           </div>
-          <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-slate-800 text-indigo-300 border border-slate-700">
+          <span className="rounded-full border border-[#2d2318] bg-[#120d09] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#e8b86d]">
             {extension}
           </span>
         </div>
 
-        {/* Text Details */}
-        <h4 className="font-display font-bold text-white text-base leading-snug line-clamp-1 mb-1">
+        <h4 className="font-display text-base font-semibold text-white leading-snug line-clamp-2 mb-2">
           {displayName}
         </h4>
-        <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-6">
-          <Calendar className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-2 text-xs text-muted mb-6">
+          <Calendar className="h-3.5 w-3.5" />
           <span>{formattedDate}</span>
         </div>
       </div>
 
-      {/* Button Actions */}
-      <div className="flex items-center justify-between gap-2 mt-auto" onClick={handleStopPropagation}>
-        {/* View Details / Toggle QR */}
+      <div className="flex items-center gap-2 mt-4" onClick={handleStopPropagation}>
         <button
+          type="button"
           onClick={onSelect}
-          className={`flex items-center justify-center gap-1.5 flex-1 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-350 ${
+          className={`flex-1 rounded-full border px-3.5 py-2 text-xs font-semibold transition-all duration-300 ${
             isSelected
-              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-650/20 hover:bg-indigo-500'
-              : 'bg-slate-800 hover:bg-slate-750 text-slate-200'
+              ? 'border-[#c9973a]/35 bg-[#c9973a]/10 text-[#e8b86d]'
+              : 'border-[#c9973a]/20 bg-[#120d09] text-[#e8b86d] hover:border-[#c9973a]/30 hover:bg-[#c9973a]/10'
           }`}
         >
-          <QrCode className="w-3.5 h-3.5" />
-          <span>Show QR</span>
+          <span className="inline-flex items-center gap-1">
+            <QrCode className="h-3.5 w-3.5" />
+            Show QR
+          </span>
         </button>
 
-        {/* Open View Link */}
         <a
           href={`/view/${model.id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center p-2 rounded-xl bg-slate-800 hover:bg-indigo-600 hover:text-white text-slate-300 border border-slate-700/60 hover:border-transparent transition-all duration-300"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#2d2318] bg-[#120d09] text-[#e8b86d] transition-all duration-300 hover:border-[#c9973a]/30 hover:bg-[#c9973a]/10"
           title="Open in AR View"
         >
-          <ExternalLink className="w-3.5 h-3.5" />
+          <ExternalLink className="h-4 w-4" />
         </a>
 
-        {/* Delete button */}
         <button
           disabled={isDeleting}
           onClick={() => {
@@ -100,13 +97,13 @@ export default function ModelCard({
               onDelete(model)
             }
           }}
-          className="flex items-center justify-center p-2 rounded-xl bg-slate-800 hover:bg-red-650 text-slate-400 hover:text-white border border-slate-700/60 hover:border-transparent transition-all duration-300 disabled:opacity-50"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#2d2318] bg-[#120d09] text-[#ef5350] transition-all duration-300 hover:border-[#ef5350]/30 hover:bg-[#4c1212] disabled:opacity-50"
           title="Delete Model"
         >
           {isDeleting ? (
-            <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#ef5350] border-t-transparent" />
           ) : (
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="h-4 w-4" />
           )}
         </button>
       </div>

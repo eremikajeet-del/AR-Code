@@ -16,7 +16,7 @@ export default function UploadZone({ onUpload, loading, progress }: UploadZonePr
   const validateAndUpload = async (file: File) => {
     setLocalError(null)
     const fileExt = file.name.split('.').pop()?.toLowerCase()
-    
+
     if (fileExt !== 'glb' && fileExt !== 'gltf') {
       setLocalError('Invalid file type. Only .glb and .gltf 3D formats are allowed.')
       return
@@ -75,11 +75,11 @@ export default function UploadZone({ onUpload, loading, progress }: UploadZonePr
         onDragLeave={handleDrag}
         onDrop={handleDrop}
         onClick={triggerFileInput}
-        className={`relative group cursor-pointer border-2 border-dashed rounded-2xl p-8 sm:p-12 transition-all duration-300 text-center flex flex-col items-center justify-center min-h-[220px] ${
+        className={`relative group cursor-pointer rounded-[24px] p-10 text-center transition-all duration-300 flex flex-col items-center justify-center min-h-[260px] border-2 border-dashed ${
           isDragActive
-            ? 'border-indigo-500 bg-indigo-500/10 shadow-lg shadow-indigo-500/5'
-            : 'border-slate-800 bg-slate-900/35 hover:border-slate-700 hover:bg-slate-900/50'
-        } ${loading ? 'pointer-events-none opacity-60' : ''}`}
+            ? 'border-[#c9973a]/40 bg-[#1f1913] shadow-[0_0_40px_rgba(201,151,58,0.18)]'
+            : 'border-[#2d2318] bg-[#12100d] hover:border-[#c9973a]/25 hover:bg-[#1a120d]'
+        } ${loading ? 'pointer-events-none opacity-70' : ''}`}
       >
         <input
           ref={fileInputRef}
@@ -92,42 +92,34 @@ export default function UploadZone({ onUpload, loading, progress }: UploadZonePr
 
         {loading ? (
           <div className="flex flex-col items-center gap-4 w-full max-w-md">
-            <div className="relative flex items-center justify-center">
-              <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-            </div>
+            <div className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#c9973a]/20 border-t-[#c9973a] animate-spin" />
             <div className="w-full text-center">
-              <p className="font-display font-medium text-white text-base">Uploading 3D Model...</p>
-              <p className="text-xs text-slate-400 mt-1">Saving file and writing to database</p>
-              
-              {/* Real-time Progress Bar */}
-              <div className="w-full mt-4 space-y-1.5">
-                <div className="flex justify-between text-xs text-indigo-400 font-semibold">
+              <p className="font-display font-semibold text-white text-base">Uploading 3D Model...</p>
+              <p className="text-sm text-muted mt-1">Saving file and preparing your immersive menu item.</p>
+              <div className="w-full mt-4 space-y-2">
+                <div className="flex justify-between text-xs text-[#e8b86d] font-semibold">
                   <span>Progress</span>
                   <span>{progress}%</span>
                 </div>
-                <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-850">
+                <div className="h-2 rounded-full bg-[#0f0a08] border border-[#2d2318] overflow-hidden">
                   <div
-                    className="h-full bg-indigo-500 shadow-glow shadow-indigo-500/50 transition-all duration-150 ease-out"
+                    className="h-full bg-[#c9973a] transition-all duration-150 ease-out"
                     style={{ width: `${progress}%` }}
-                  ></div>
+                  />
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center">
-            <div className="bg-indigo-500/10 text-indigo-400 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300">
-              <FileUp className="w-8 h-8" />
+          <div className="flex flex-col items-center gap-5">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1a1510] text-[#e8b86d] shadow-[0_15px_35px_rgba(201,151,58,0.16)]">
+              <FileUp className="h-8 w-8" />
             </div>
-            <h3 className="font-display font-semibold text-white text-lg mb-1">
-              Drag & drop your 3D model
-            </h3>
-            <p className="text-slate-400 text-sm mb-4 max-w-sm">
-              Supports <strong className="text-indigo-300">.glb</strong> or <strong className="text-indigo-300">.gltf</strong> formats (max 50MB)
-            </p>
+            <h3 className="font-display font-semibold text-white text-xl">Drag & drop your 3D model</h3>
+            <p className="max-w-sm text-sm text-muted">Supports <strong className="text-[#e8b86d]">.glb</strong> and <strong className="text-[#e8b86d]">.gltf</strong> files • Max 50MB</p>
             <button
               type="button"
-              className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md shadow-indigo-600/10"
+              className="gold-button inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold shadow-[0_18px_45px_rgba(201,151,58,0.18)] transition-all duration-300"
             >
               Browse Files
             </button>
@@ -136,8 +128,8 @@ export default function UploadZone({ onUpload, loading, progress }: UploadZonePr
       </div>
 
       {localError && (
-        <div className="mt-4 flex items-start gap-2.5 bg-red-500/10 border border-red-500/20 text-red-400 p-3.5 rounded-xl text-sm leading-relaxed animate-fade-in">
-          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+        <div className="mt-4 flex items-start gap-3 rounded-2xl border border-[#ef5350]/25 bg-[#3f1210] p-4 text-sm text-[#ef5350]">
+          <AlertCircle className="mt-0.5 h-5 w-5" />
           <span>{localError}</span>
         </div>
       )}
